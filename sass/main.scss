@@ -1,0 +1,193 @@
+$aspectRatio: 3.5 / 2;
+$cardWidth: 500px;
+$blurAmount: 20px;
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #000;
+	font-family: monospace;
+	color: #FFF;
+	background:
+		linear-gradient(-135deg, rgb(52, 143, 108) 10%, transparent), 
+		repeating-linear-gradient(45deg, rgb(34, 94, 71) 0%, rgb(32, 96, 71, .6) 5%, transparent 5%, transparent 10%), 
+		repeating-linear-gradient(-45deg, rgb(34, 150, 105, .4) 0%, rgb(32, 96, 71, .5) 5%, transparent 5%, transparent 10%);
+	background-color: rgb(19, 83, 58, .25);
+}
+
+.m-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	
+	/*
+	 * This is just a small visual demo. 
+	 * No real mobile optimisation necessary.
+	 */
+	@media (max-width: $cardWidth) {
+		transform: scale(.5);
+		width: 200vw;
+	    transform-origin: left;
+	}
+}
+
+.c-creditcard {
+	width: 100%;
+	max-width: $cardWidth;
+	aspect-ratio: $aspectRatio;
+	padding: 32px;
+	border-radius: 25px;
+	background: linear-gradient(155deg, rgb(255, 255, 255, .15), transparent);
+	backdrop-filter: blur($blurAmount);
+	animation: cardWobble 10000ms infinite;
+	box-shadow: 2px 4px 6px rgba(0, 0, 0, .1), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+
+	@supports not(aspect-ratio: 3.5 / 2) {
+		height: 285px
+	}
+	
+	&__wrapper {
+		display: grid;
+		grid-template-areas: 
+			'. . . logo'
+			'icon . . .'
+			'number number . .'
+			'name . . date';
+		height: 100%;
+	}
+	
+	&__number,
+	&__name, 
+	&__date {
+		display: flex;
+		align-items: flex-end;
+	}
+	
+	&__logo,
+	&__date {
+		display: flex;
+		justify-content: flex-end;
+	}
+	
+	
+	&__logo {
+		grid-area: logo;
+	}
+	
+	&__icon {
+		grid-area: icon;	
+		background-color: rgba(255, 255, 255, .3);
+		width: 55px;
+		height: 40px;
+		border-radius: 3px;
+	}
+	
+	&__number {
+		grid-area: number;	
+		font-size: 22px;
+	}
+	
+	&__name {
+		grid-area: name;
+		font-size: 16px;
+	}
+	
+	&__date {
+		grid-area: date;
+	}
+}
+
+.c-decoration {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	max-width: ($cardWidth + 100px);
+	aspect-ratio: $aspectRatio;
+	transform: translate(-50%, -50%);
+	
+	@supports not(aspect-ratio: 3.5 / 2) {
+		padding-bottom: calc(100% * 2 / 3.5 / 2);
+	}
+	
+	&__item {
+		--size: 220px;
+		--spacing: -32px;
+		--animation-name: circleRotate;
+		--gradient: #80D0C7, #0093E9;
+
+		
+		position: absolute;
+		width: var(--size);
+		height: var(--size);
+		aspect-ratio: 1 / 1;
+		background: radial-gradient(var(--gradient));
+  		border-radius: 50%;
+		animation: var(--animation-name) 10000ms linear infinite;
+		
+		&:first-child {
+			top: var(--spacing);
+			left: var(--spacing);
+		}
+				
+		&:last-child {
+			--size: 170px;
+			--animation-name: circleRotateReverse;
+			--gradient: #C850C0, #4158D0;
+
+			bottom: var(--spacing);
+			right: var(--spacing);
+			transform: translate(90px, -20px)
+		}
+	}
+}
+
+@keyframes cardWobble {
+	0% { transform: translateY(20px) }
+	50% { transform: translateY(-20px) }
+	100% { transform: translateY(20px) }
+}
+
+
+@keyframes circleRotate {
+	from { 	transform: rotate(0deg) translateX(60px); }
+	to   {  transform: rotate(360deg) translateX(60px); }
+}
+
+@keyframes circleRotateReverse {
+	from { 	transform: rotate(0deg) translateX(100px); }
+	to   {  transform: rotate(-360deg) translateX(100px); }
+}
+
+
+.c-old-browser {
+	position: absolute;
+	top: 0;
+	width: 100vw;
+	padding: 16px;
+	background-color: rgba(0, 0, 0, .1);
+	backdrop-filter: blur($blurAmount);
+	
+	@supports (aspect-ratio: $aspectRatio) and (backdrop-filter: blur($blurAmount)) {
+		display: none;
+	}
+	
+	.is-backdrop-filter {
+		
+		@supports (backdrop-filter: blur($blurAmount)) {
+			display: none;
+		}
+	}
+	
+	.is-aspect-ratio {
+		
+		@supports (aspect-ratio: $aspectRatio) {
+			display: none;
+		}
+	}
+}
