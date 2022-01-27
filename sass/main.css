@@ -1,0 +1,205 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000;
+  font-family: monospace;
+  color: #FFF;
+  background: linear-gradient(-135deg, #348f6c 10%, transparent), repeating-linear-gradient(45deg, #225e47 0%, rgba(32, 96, 71, 0.6) 5%, transparent 5%, transparent 10%), repeating-linear-gradient(-45deg, rgba(34, 150, 105, 0.4) 0%, rgba(32, 96, 71, 0.5) 5%, transparent 5%, transparent 10%);
+  background-color: rgba(19, 83, 58, 0.25);
+}
+
+.m-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  /*
+   * This is just a small visual demo. 
+   * No real mobile optimisation necessary.
+   */
+}
+@media (max-width: 500px) {
+  .m-wrapper {
+    transform: scale(0.5);
+    width: 200vw;
+    transform-origin: left;
+  }
+}
+
+.c-creditcard {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1.75;
+  padding: 32px;
+  border-radius: 25px;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.15), transparent);
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+  -webkit-animation: cardWobble 10000ms infinite;
+          animation: cardWobble 10000ms infinite;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+@supports not (aspect-ratio: 3.5/2) {
+  .c-creditcard {
+    height: 285px;
+  }
+}
+.c-creditcard__wrapper {
+  display: grid;
+  grid-template-areas: ". . . logo" "icon . . ." "number number . ." "name . . date";
+  height: 100%;
+}
+.c-creditcard__number, .c-creditcard__name, .c-creditcard__date {
+  display: flex;
+  align-items: flex-end;
+}
+.c-creditcard__logo, .c-creditcard__date {
+  display: flex;
+  justify-content: flex-end;
+}
+.c-creditcard__logo {
+  grid-area: logo;
+}
+.c-creditcard__icon {
+  grid-area: icon;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 55px;
+  height: 40px;
+  border-radius: 3px;
+}
+.c-creditcard__number {
+  grid-area: number;
+  font-size: 22px;
+}
+.c-creditcard__name {
+  grid-area: name;
+  font-size: 16px;
+}
+.c-creditcard__date {
+  grid-area: date;
+}
+
+.c-decoration {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1.75;
+  transform: translate(-50%, -50%);
+}
+@supports not (aspect-ratio: 3.5/2) {
+  .c-decoration {
+    padding-bottom: calc(100% * 2 / 3.5 / 2);
+  }
+}
+.c-decoration__item {
+  --size: 220px;
+  --spacing: -32px;
+  --animation-name: circleRotate;
+  --gradient: #80D0C7, #0093E9;
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  aspect-ratio: 1/1;
+  background: radial-gradient(var(--gradient));
+  border-radius: 50%;
+  -webkit-animation: var(--animation-name) 10000ms linear infinite;
+          animation: var(--animation-name) 10000ms linear infinite;
+}
+.c-decoration__item:first-child {
+  top: var(--spacing);
+  left: var(--spacing);
+}
+.c-decoration__item:last-child {
+  --size: 170px;
+  --animation-name: circleRotateReverse;
+  --gradient: #C850C0, #4158D0;
+  bottom: var(--spacing);
+  right: var(--spacing);
+  transform: translate(90px, -20px);
+}
+
+@-webkit-keyframes cardWobble {
+  0% {
+    transform: translateY(20px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+
+@keyframes cardWobble {
+  0% {
+    transform: translateY(20px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(20px);
+  }
+}
+@-webkit-keyframes circleRotate {
+  from {
+    transform: rotate(0deg) translateX(60px);
+  }
+  to {
+    transform: rotate(360deg) translateX(60px);
+  }
+}
+@keyframes circleRotate {
+  from {
+    transform: rotate(0deg) translateX(60px);
+  }
+  to {
+    transform: rotate(360deg) translateX(60px);
+  }
+}
+@-webkit-keyframes circleRotateReverse {
+  from {
+    transform: rotate(0deg) translateX(100px);
+  }
+  to {
+    transform: rotate(-360deg) translateX(100px);
+  }
+}
+@keyframes circleRotateReverse {
+  from {
+    transform: rotate(0deg) translateX(100px);
+  }
+  to {
+    transform: rotate(-360deg) translateX(100px);
+  }
+}
+.c-old-browser {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(20px);
+          backdrop-filter: blur(20px);
+}
+@supports (aspect-ratio: 1.75) and ((-webkit-backdrop-filter: blur(20px)) or (backdrop-filter: blur(20px))) {
+  .c-old-browser {
+    display: none;
+  }
+}
+@supports ((-webkit-backdrop-filter: blur(20px)) or (backdrop-filter: blur(20px))) {
+  .c-old-browser .is-backdrop-filter {
+    display: none;
+  }
+}
+@supports (aspect-ratio: 1.75) {
+  .c-old-browser .is-aspect-ratio {
+    display: none;
+  }
+}/*# sourceMappingURL=main.css.map */
